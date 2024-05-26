@@ -36,9 +36,10 @@ namespace NoClippy
             }
         }
 
+       /* 
         [Command("/noclippy")]
         [HelpMessage("/noclippy [on|off|toggle|dry|help] - Toggles the config window if no option is specified.")]
-        private void OnNoClippy(string command, string argument)
+        private static void OnNoClippy(string command, string argument)
         {
             switch (argument)
             {
@@ -71,6 +72,7 @@ namespace NoClippy
                     break;
             }
         }
+       */
 
         public static void PrintEcho(string message) => DalamudApi.ChatGui.Print($"[NoClippy] {message}");
         public static void PrintError(string message) => DalamudApi.ChatGui.PrintError($"[NoClippy] {message}");
