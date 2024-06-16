@@ -148,9 +148,6 @@ namespace NoClippy.Modules
                 var logString = IsDryRunEnabled ? "[DRY] " : string.Empty;
                 logString += $"Action: {actionID} {($"({F2MS(newLock)} ms)")}";
 
-                if (enableAnticheat)
-                    logString += $" [Alexander: {F2MS(rtt - (lastRecordedLock - newLock))} ms]";
-
                 logString += $" || Lock: {F2MS(oldLock)} > {F2MS(adjustedAnimationLock)} ms";
                 logString += $" || Packets: {packetsSent}";
 
