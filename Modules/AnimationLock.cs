@@ -146,13 +146,12 @@ namespace NoClippy.Modules
                 if (!Config.EnableLogging) return;
 
                 var logString = IsDryRunEnabled ? "[DRY] " : string.Empty;
-                logString += $"Action: {actionID} {(lastRecordedLock != newLock ? $"({F2MS(lastRecordedLock)} > {F2MS(newLock)} ms)" : $"({F2MS(newLock)} ms)")}";
-                logString += $" || RTT: {F2MS(rtt)} (+{variationMultiplier:P0}) ms";
+                logString += $"Action: {actionID} {($"({F2MS(newLock)} ms)")}";
 
                 if (enableAnticheat)
                     logString += $" [Alexander: {F2MS(rtt - (lastRecordedLock - newLock))} ms]";
 
-                logString += $" || Lock: {F2MS(oldLock)} > {F2MS(adjustedAnimationLock)} ({F2MS(correction + networkVariation):+0;-#}) ms";
+                logString += $" || Lock: {F2MS(oldLock)} > {F2MS(adjustedAnimationLock)} ms";
                 logString += $" || Packets: {packetsSent}";
 
                 PrintLog(logString);
