@@ -10,7 +10,7 @@ on:
 
 env:
   SOLUTION_NAME: NoClippy
-  RELEASE_DIR: NoClippy\bin\Release\NoClippy
+  RELEASE_DIR: bin\Release\NoClippy
 
 jobs:
   build:
@@ -32,8 +32,7 @@ jobs:
         dotnet build --configuration Release
       env: 
         DOTNET_CLI_TELEMETRY_OPTOUT: true
-
-    - run: mkdir tmp-dir && mv ${{ env.RELEASE_DIR }} tmp-dir/ && mv tmp-dir ${{ env.RELEASE_DIR }}
+        
     - uses: actions/upload-artifact@v2
       with:
         name: PluginRepoZip
