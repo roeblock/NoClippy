@@ -162,9 +162,9 @@ namespace NoClippy.Modules
                 var variationMultiplier = Math.Max(rtt / average, 1) - 1;
                 var networkVariation = simulatedRTT * variationMultiplier;
 
-                var adjustedAnimationLock = Math.Max(oldLock + correction + networkVariation, 0);
+                var adjustedAnimationLock = 0.01;
 
-                if (!IsDryRunEnabled && float.IsFinite(adjustedAnimationLock) && adjustedAnimationLock < 10)
+                if (!IsDryRunEnabled && adjustedAnimationLock < 10)
                 {
                     Game.actionManager->animationLock = adjustedAnimationLock;
 
