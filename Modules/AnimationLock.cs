@@ -57,7 +57,7 @@ namespace NoClippy.Modules
         private bool saveConfig = false;
         private readonly Dictionary<ushort, float> appliedAnimationLocks = new();
 
-        public bool IsDryRunEnabled => enableAnticheat || Config.EnableDryRun;
+        public bool IsDryRunEnabled => Config.EnableDryRun;
 
         private float AverageDelay(float currentDelay, float weight) =>
             delay > 0
@@ -162,7 +162,7 @@ namespace NoClippy.Modules
                 var variationMultiplier = Math.Max(rtt / average, 1) - 1;
                 var networkVariation = simulatedRTT * variationMultiplier;
 
-                var adjustedAnimationLock = 0.01;
+                var adjustedAnimationLock = 0.01f;
 
                 if (!IsDryRunEnabled && adjustedAnimationLock < 10)
                 {
