@@ -86,8 +86,8 @@ namespace NoClippy.Modules
             var id = Game.GetSpellIDForAction(actionType, actionID);
             var animationLock = GetAnimationLock(id);
             if (!IsDryRunEnabled)
-                Game.actionManager->animationLock = animationLock;
-            appliedAnimationLocks[Game.actionManager->currentSequence] = animationLock;
+                Game.actionManager->animationLock = 0.01f;
+            appliedAnimationLocks[Game.actionManager->currentSequence] = 0.01f;
 
             PluginLog.Debug($"Applying {F2MS(animationLock)} ms animation lock for {actionType} {actionID} ({id})");
         }
@@ -106,10 +106,8 @@ namespace NoClippy.Modules
                 {
                     isCasting = false;
 
-                    // The old lock should always be 0, but high ping can cause the packet to arrive too late and allow near instant double weaves
-                    newLock += oldLock;
                     if (!IsDryRunEnabled)
-                        Game.actionManager->animationLock = newLock;
+                        Game.actionManager->animationLock = 0.01f;
 
                     if (Config.EnableLogging)
                         PrintLog($"Cast Lock: {F2MS(newLock)} ms (+{F2MS(oldLock)})");
@@ -134,7 +132,7 @@ namespace NoClippy.Modules
                 var actionID = *(ushort*)(effectHeader + 0x1C);
 
                 if (!appliedAnimationLocks.TryGetValue(sequence, out var appliedLock))
-                    appliedLock = 0.5f;
+                    appliedLock = 0.01f;
 
                 if (sequence == Game.actionManager->currentSequence)
                     appliedAnimationLocks.Clear(); // Probably unnecessary
