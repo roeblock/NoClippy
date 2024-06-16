@@ -66,8 +66,7 @@ namespace NoClippy.Modules
 
         private static float GetAnimationLock(uint actionID) => (!Config.AnimationLocks.TryGetValue(actionID, out var animationLock) || animationLock < 0.5f
                 ? Game.DefaultClientAnimationLock
-                : animationLock)
-            + simulatedRTT;
+                : animationLock);
 
         private static void UpdateDatabase(uint actionID, float animationLock)
         {
@@ -86,8 +85,8 @@ namespace NoClippy.Modules
             var id = Game.GetSpellIDForAction(actionType, actionID);
             var animationLock = GetAnimationLock(id);
             if (!IsDryRunEnabled)
-                Game.actionManager->animationLock = 0.01f;
-            appliedAnimationLocks[Game.actionManager->currentSequence] = 0.01f;
+                Game.actionManager->animationLock = 0;
+            appliedAnimationLocks[Game.actionManager->currentSequence] = 0;
 
             PluginLog.Debug($"Applying {F2MS(animationLock)} ms animation lock for {actionType} {actionID} ({id})");
         }
@@ -99,20 +98,14 @@ namespace NoClippy.Modules
         {
             try
             {
-                if (oldLock == newLock || sourceActor != DalamudApi.ClientState.LocalPlayer?.Address) return;
-
-                // Ignore cast locks (caster tax, teleport, lb)
-                if (isCasting)
-                {
-                    isCasting = false;
+                if (sourceActor != DalamudApi.ClientState.LocalPlayer?.Address) return;
 
                     if (!IsDryRunEnabled)
-                        Game.actionManager->animationLock = 0.01f;
+                        Game.actionManager->animationLock = 0;
 
                     if (Config.EnableLogging)
                         PrintLog($"Cast Lock: {F2MS(newLock)} ms (+{F2MS(oldLock)})");
                     return;
-                }
 /*
                 if (newLock != *(float*)(effectHeader + 0x10))
                 {
@@ -132,28 +125,12 @@ namespace NoClippy.Modules
                 var actionID = *(ushort*)(effectHeader + 0x1C);
 
                 if (!appliedAnimationLocks.TryGetValue(sequence, out var appliedLock))
-                    appliedLock = 0.01f;
-
-                if (sequence == Game.actionManager->currentSequence)
-                    appliedAnimationLocks.Clear(); // Probably unnecessary
-
-                var lastRecordedLock = appliedLock - simulatedRTT;
+                    appliedLock = 0;
 
                 if (!enableAnticheat)
                     UpdateDatabase(actionID, newLock);
 
-                // Get the difference between the recorded animation lock and the real one
-                var correction = newLock - lastRecordedLock;
-                var rtt = appliedLock - oldLock;
-
-                var prevAverage = delay;
-                var newAverage = AverageDelay(rtt, packetsSent > 1 ? 0.1f : 1f);
-                var average = Math.Max(prevAverage > 0 ? prevAverage : newAverage, 0.001f);
-
-                var variationMultiplier = Math.Max(rtt / average, 1) - 1;
-                var networkVariation = simulatedRTT * variationMultiplier;
-
-                var adjustedAnimationLock = 0.01f;
+                var adjustedAnimationLock = 0;
 
                 if (!IsDryRunEnabled && adjustedAnimationLock < 10)
                 {
