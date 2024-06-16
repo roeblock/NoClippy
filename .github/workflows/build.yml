@@ -10,6 +10,7 @@ on:
 
 env:
   SOLUTION_NAME: NoClippy
+  RELEASE_DIR: NoClippy\bin\Release
 
 jobs:
   build:
@@ -34,5 +35,5 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: PluginRepoZip
-        path: my_files.tar
-        if-no-files-found: error
+        path: ${{ env.RELEASE_DIR }}
+        if-no-files-found: warn
