@@ -10,7 +10,7 @@ on:
 
 env:
   SOLUTION_NAME: NoClippy
-  RELEASE_DIR: NoClippy\bin\Release
+  RELEASE_DIR: NoClippy\NoClippy\bin\Release
 
 jobs:
   build:
