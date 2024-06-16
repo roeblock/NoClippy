@@ -146,13 +146,6 @@ namespace NoClippy.Modules
                 var correction = newLock - lastRecordedLock;
                 var rtt = appliedLock - oldLock;
 
-                if (rtt <= simulatedRTT)
-                {
-                    if (Config.EnableLogging)
-                        PrintLog($"RTT ({F2MS(rtt)} ms) was lower than {F2MS(simulatedRTT)} ms, no adjustments were made");
-                    return;
-                }
-
                 var prevAverage = delay;
                 var newAverage = AverageDelay(rtt, packetsSent > 1 ? 0.1f : 1f);
                 var average = Math.Max(prevAverage > 0 ? prevAverage : newAverage, 0.001f);
