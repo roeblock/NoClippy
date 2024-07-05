@@ -73,7 +73,7 @@ namespace NoClippy.Modules
             if (Config.AnimationLocks.TryGetValue(actionID, out var oldLock) && oldLock == animationLock) return;
             Config.AnimationLocks[actionID] = animationLock;
             Config.Save();
-            PluginLog.Debug($"Recorded new animation lock value of {F2MS(animationLock)} ms for {actionID}");
+            DalamudApi.LogDebug($"Recorded new animation lock value of {F2MS(animationLock)} ms for {actionID}");
         }
 
         private unsafe void UseActionLocation(nint actionManager, uint actionType, uint actionID, ulong targetedActorID, nint vectorLocation, uint param, byte ret)
@@ -88,7 +88,7 @@ namespace NoClippy.Modules
                 Game.actionManager->animationLock = 0;
             appliedAnimationLocks[Game.actionManager->currentSequence] = 0;
 
-            PluginLog.Debug($"Applying {F2MS(animationLock)} ms animation lock for {actionType} {actionID} ({id})");
+            DalamudApi.LogDebug($"Applying {F2MS(animationLock)} ms animation lock for {actionType} {actionID} ({id})");
         }
 
         private void CastBegin(ulong objectID, nint packetData) => isCasting = true;
