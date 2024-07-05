@@ -1,6 +1,5 @@
 using System;
 using Dalamud.Game.Text;
-using Dalamud.Logging;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 
@@ -11,7 +10,7 @@ namespace NoClippy
         public static NoClippy Plugin { get; private set; }
         public static Configuration Config { get; private set; }
 
-        public NoClippy(DalamudPluginInterface pluginInterface)
+        public NoClippy(IDalamudPluginInterface pluginInterface)
         {
             Plugin = this;
             DalamudApi.Initialize(this, pluginInterface);
@@ -32,14 +31,13 @@ namespace NoClippy
             catch (Exception e)
             {
                 PrintError("Failed to load!");
-                PluginLog.LogError(e.ToString());
+                DalamudApi.LogError(e.ToString());
             }
         }
 
-       /* 
         [Command("/noclippy")]
         [HelpMessage("/noclippy [on|off|toggle|dry|help] - Toggles the config window if no option is specified.")]
-        private static void OnNoClippy(string command, string argument)
+        private void OnNoClippy(string command, string argument)
         {
             switch (argument)
             {
@@ -72,7 +70,6 @@ namespace NoClippy
                     break;
             }
         }
-       */
 
         public static void PrintEcho(string message) => DalamudApi.ChatGui.Print($"[NoClippy] {message}");
         public static void PrintError(string message) => DalamudApi.ChatGui.PrintError($"[NoClippy] {message}");
@@ -96,7 +93,7 @@ namespace NoClippy
             }
             else
             {
-                PluginLog.LogInformation(message);
+                DalamudApi.LogInfo(message);
             }
         }
 
